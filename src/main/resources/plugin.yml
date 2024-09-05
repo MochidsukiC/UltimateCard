@@ -1,0 +1,4 @@
+name: UltimateCard
+version: '1.0-SNAPSHOT'
+main: jp.houlab.Mochidsuki.ultimateCard.Main
+api-version: '1.20'
