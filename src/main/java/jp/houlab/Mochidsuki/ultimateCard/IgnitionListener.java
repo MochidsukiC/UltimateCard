@@ -36,6 +36,7 @@ public class IgnitionListener implements org.bukkit.event.Listener {
                         }.runTaskLater(plugin, 20);
                         LoadingItems.add(item);
                     }
+                    break;
                 }
             }
         }
