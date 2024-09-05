@@ -31,5 +31,10 @@
       <option name="name" value="central" />
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="Elytra_JetPacker" />
+      <option name="name" value="Elytra_JetPacker" />
+      <option name="url" value="https://maven.pkg.github.com/MochidsukiC/Elytra_JetPacker" />
+    </remote-repository>
   </component>
 </project>

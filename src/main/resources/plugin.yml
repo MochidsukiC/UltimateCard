@@ -2,3 +2,16 @@ name: UltimateCard
 version: '1.0-SNAPSHOT'
 main: jp.houlab.Mochidsuki.ultimateCard.Main
 api-version: '1.20'
+
+commands:
+  takeoff:
+    aliases: [takeoff]
+    description: BRC管理コマンド
+    permission: ultimatecard.command.takeoff
+    permission-message: Permission denied
+    usage: gr reload
+
+permissions:
+  ultimatecard.command.takeoff:
+    description: Allows you to ignite yourself
+    default: true

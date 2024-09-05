@@ -1,5 +1,7 @@
 package jp.houlab.Mochidsuki.ultimateCard;
 
+import jp.houlab.Mochidsuki.ultimateCard.TakeOff.TakeOffCommandListener;
+import jp.houlab.Mochidsuki.ultimateCard.TakeOff.TakeOffListener;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -14,6 +16,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new IgnitionListener(),this);
         getServer().getPluginManager().registerEvents(new TakeOffListener(),this);
         plugin = this;
+
+        getCommand("takeoff").setExecutor(new TakeOffCommandListener());
 
     }
 
