@@ -19,7 +19,15 @@ import org.bukkit.potion.PotionEffectType;
 
 import static jp.houlab.mochidsuki.elytra_jetpacker.Main.plugin;
 
+/**
+ *アルティメットアビリティ・テイクオフに関するイベントリスナー
+ * @author Mochidsuki
+ */
 public class TakeOffListener implements Listener {
+    /**
+     * プレイヤーが離陸をキャンセルした際に呼び出される
+     * @param event PlayerToggleSneakEventからの引数
+     */
     @EventHandler
     public void PlayerToggleSneakEvent(PlayerToggleSneakEvent event){
         Player player = event.getPlayer();
@@ -43,6 +51,11 @@ public class TakeOffListener implements Listener {
             }
         }
     }
+
+    /**
+     * プレイヤーが離陸を開始しようとした時に呼び出される
+     * @param event PlayerInteractEventからの引数
+     */
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent event){
         Player player = event.getPlayer();
