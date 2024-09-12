@@ -1,4 +1,4 @@
-package jp.houlab.Mochidsuki.ultimateCard.TakeOff;
+package jp.houlab.Mochidsuki.ultimateCard.takeoff;
 
 import jp.houlab.mochidsuki.elytra_jetpacker.JumpEffect;
 import jp.houlab.mochidsuki.elytra_jetpacker.Main;
@@ -21,7 +21,16 @@ import java.util.List;
 
 import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
 
+/**
+ * アルティメットアビリティ・テイクオフのメインクラス
+ * @author Mochidsuki
+ */
 public class TakeOffMain {
+    /**
+     * プレイヤーを離陸待機に移行する
+     * @param player 離陸待機に移行するプレイヤー
+     * @param isMainPlayer プレイヤーがメイン飛行者(アルティメット使用者)か否か
+     */
     static public void holdTakeOff(Player player,boolean isMainPlayer) {
         boolean flag = false;
 
@@ -75,6 +84,11 @@ public class TakeOffMain {
             player.sendMessage("上空に障害物あり");
         }
     }
+
+    /**
+     * プレイヤーをエンジンスピンアップ状態に移行する
+     * @param player 対象となるプレイヤー
+     */
     static public void spinUpEngine(Player player) {
         Shulker shulker = player.getWorld().spawn(player.getLocation().clone().add(0,1.6,0), Shulker.class);
         shulker.setAI(false);
@@ -134,7 +148,13 @@ public class TakeOffMain {
         }.runTaskTimer(Main.plugin, 0L, 1L);
     }
 
+    /**
+     * 離陸準備中のプレイヤーとそれを司るBukkitRunnableタスク
+     */
     static public HashMap<Player,BukkitTask> holdingTask = new HashMap<>();
+    /**
+     * メイン飛行者のリスト
+     */
     static public List<Player> mainUser = new ArrayList<>();
 }
 

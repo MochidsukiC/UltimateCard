@@ -1,25 +1,27 @@
-package jp.houlab.Mochidsuki.ultimateCard.TakeOff;
+package jp.houlab.Mochidsuki.ultimateCard.takeoff;
 
 import jp.houlab.Mochidsuki.ultimateCard.IgnitionListener;
 import jp.houlab.Mochidsuki.ultimateCard.Main;
-import jp.houlab.mochidsuki.elytra_jetpacker.JumpEffect;
-import jp.houlab.mochidsuki.elytra_jetpacker.RemoveTag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import static jp.houlab.mochidsuki.elytra_jetpacker.Main.plugin;
-
+/**
+ *アルティメットアビリティ・テイクオフに関するイベントリスナー
+ * @author Mochidsuki
+ */
 public class TakeOffListener implements Listener {
+    /**
+     * プレイヤーが離陸をキャンセルした際に呼び出される
+     * @param event PlayerToggleSneakEventからの引数
+     */
     @EventHandler
     public void PlayerToggleSneakEvent(PlayerToggleSneakEvent event){
         Player player = event.getPlayer();
@@ -43,6 +45,11 @@ public class TakeOffListener implements Listener {
             }
         }
     }
+
+    /**
+     * プレイヤーが離陸を開始しようとした時に呼び出される
+     * @param event PlayerInteractEventからの引数
+     */
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent event){
         Player player = event.getPlayer();
