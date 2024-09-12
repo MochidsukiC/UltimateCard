@@ -1,5 +1,7 @@
 package jp.houlab.Mochidsuki.ultimateCard;
 
+
+
 import jp.houlab.Mochidsuki.ultimateCard.takeoff.TakeOffCommandListener;
 import jp.houlab.Mochidsuki.ultimateCard.takeoff.TakeOffListener;
 import org.bukkit.Material;
