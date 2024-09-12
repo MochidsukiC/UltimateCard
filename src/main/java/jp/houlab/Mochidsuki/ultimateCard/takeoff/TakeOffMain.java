@@ -1,4 +1,4 @@
-package jp.houlab.Mochidsuki.ultimateCard.TakeOff;
+package jp.houlab.Mochidsuki.ultimateCard.takeoff;
 
 import jp.houlab.mochidsuki.elytra_jetpacker.JumpEffect;
 import jp.houlab.mochidsuki.elytra_jetpacker.Main;

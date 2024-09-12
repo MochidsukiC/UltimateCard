@@ -1,23 +1,17 @@
-package jp.houlab.Mochidsuki.ultimateCard.TakeOff;
+package jp.houlab.Mochidsuki.ultimateCard.takeoff;
 
 import jp.houlab.Mochidsuki.ultimateCard.IgnitionListener;
 import jp.houlab.Mochidsuki.ultimateCard.Main;
-import jp.houlab.mochidsuki.elytra_jetpacker.JumpEffect;
-import jp.houlab.mochidsuki.elytra_jetpacker.RemoveTag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import static jp.houlab.mochidsuki.elytra_jetpacker.Main.plugin;
 
 /**
  *アルティメットアビリティ・テイクオフに関するイベントリスナー

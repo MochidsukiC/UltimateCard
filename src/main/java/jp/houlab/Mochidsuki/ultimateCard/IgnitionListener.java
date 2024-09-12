@@ -1,6 +1,6 @@
 package jp.houlab.Mochidsuki.ultimateCard;
 
-import jp.houlab.Mochidsuki.ultimateCard.TakeOff.TakeOffMain;
+import jp.houlab.Mochidsuki.ultimateCard.takeoff.TakeOffMain;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -42,6 +42,9 @@ public class IgnitionListener implements org.bukkit.event.Listener {
                         LoadingItems.add(item);
                     }
                     break;
+                }
+                case VEX_ARMOR_TRIM_SMITHING_TEMPLATE:{//Respawn
+
                 }
             }
         }

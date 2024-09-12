@@ -1,6 +1,5 @@
-package jp.houlab.Mochidsuki.ultimateCard.TakeOff;
+package jp.houlab.Mochidsuki.ultimateCard.takeoff;
 
-import jp.houlab.mochidsuki.elytra_jetpacker.CommandListener;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
