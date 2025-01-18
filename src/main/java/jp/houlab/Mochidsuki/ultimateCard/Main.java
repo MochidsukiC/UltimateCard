@@ -32,5 +32,6 @@ public final class Main extends JavaPlugin {
     }
     static public void setCoolDown(Player player, int seconds){
         player.setCooldown(Material.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE,seconds*20);
+        player.setCooldown(Material.VEX_ARMOR_TRIM_SMITHING_TEMPLATE,seconds*20);
     }
 }

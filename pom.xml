@@ -63,6 +63,10 @@
             <id>Elytra_JetPacker</id>
             <url>https://maven.pkg.github.com/MochidsukiC/Elytra_JetPacker</url>
         </repository>
+        <repository>
+            <id>GameMap</id>
+            <url>https://maven.pkg.github.com/MochidsukiC/GameMap</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -75,6 +79,12 @@
         <dependency>
             <groupId>jp.houlab.mochidsuki</groupId>
             <artifactId>elytra_jetpacker</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jp.houlab.mochidsuki</groupId>
+            <artifactId>gamemap</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>

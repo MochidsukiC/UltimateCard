@@ -1,5 +1,6 @@
 package jp.houlab.Mochidsuki.ultimateCard;
 
+import jp.houlab.Mochidsuki.ultimateCard.respawn.Respawn;
 import jp.houlab.Mochidsuki.ultimateCard.takeoff.TakeOffMain;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -44,7 +45,10 @@ public class IgnitionListener implements org.bukkit.event.Listener {
                     break;
                 }
                 case VEX_ARMOR_TRIM_SMITHING_TEMPLATE:{//Respawn
-
+                    if(player.getCooldown(Material.VEX_ARMOR_TRIM_SMITHING_TEMPLATE) == 0) {
+                        new Respawn(player, player.getLocation().clone(), 0).runTaskTimer(plugin, 1, 1);
+                        Main.setCoolDown(player,10);
+                    }
                 }
             }
         }

@@ -1,21 +1,24 @@
 package jp.houlab.Mochidsuki.ultimateCard.respawn;
 
+import jp.houlab.mochidsuki.gamemap.GiveMap;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
 import static jp.houlab.Mochidsuki.ultimateCard.Main.config;
 
-public class RespawnEffectStart extends BukkitRunnable {
+public class Respawn extends BukkitRunnable {
     private Player player;
     private Location location;
     private double pitch = Math.toRadians(90);
     private double yaw = 0;
     private int times;
-    RespawnEffectStart(Player player, Location location, int times) {
+    public Respawn(Player player, Location location, int times) {
         this.player = player;
         this.location = location;
         this.times = times;
@@ -25,11 +28,15 @@ public class RespawnEffectStart extends BukkitRunnable {
     @Override
     public void run() {
         spawnParticle();
+        float p = (float) (times / config.getDouble("Respawn.prepareTime"));
+        if(times%10 == 1) {
+            location.getWorld().playSound(location, Sound.ENTITY_WITHER_SPAWN, 0.3f, p);
+        }
         times++;
     }
 
     private void spawnParticle(){
-        final int r = 5;
+        final int r = 30;
         double tan72 = Math.tan(Math.toRadians(72));
         double tan36 = Math.tan(Math.toRadians(36));
         double tan18 = Math.tan(Math.toRadians(18));
@@ -83,7 +90,7 @@ public class RespawnEffectStart extends BukkitRunnable {
             location.getWorld().spawnParticle(Particle.END_ROD,locationTemp.clone().add(new Vector(c/40,b/40,0).rotateAroundZ(Math.toRadians(times)).rotateAroundX(pitch).rotateAroundY(yaw)),3,0,0,0,0);
 
         }
-        final int prepareTime = config.getInt("Ultimate.prepareTime");
+        final int prepareTime = config.getInt("Respawn.prepareTime");
         if(times < prepareTime){
             if(times <= prepareTime/5){
                 spawnCircleParticle(Particle.DUST_COLOR_TRANSITION,times*10,r,9,new Particle.DustTransition(Color.BLUE,Color.AQUA,2));
@@ -96,8 +103,16 @@ public class RespawnEffectStart extends BukkitRunnable {
             }else {
                 spawnCircleParticle(Particle.DUST_COLOR_TRANSITION,times*10,r,9,new Particle.DustTransition(Color.ORANGE,Color.RED,2));
             }
+
+
+            if(times == prepareTime - 40){
+                location.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,location,10000,0,0,0,20);
+            }
         } else if (times>=prepareTime) {
-            new RespawnEnd();
+            if(!player.getGameMode().equals(GameMode.SPECTATOR)) {
+                respawnEnd();
+            }
+            cancel();
         }
 
     }
@@ -110,6 +125,35 @@ public class RespawnEffectStart extends BukkitRunnable {
             b = r * Math.sin(Math.toRadians(k+a));
             Location locationTemp = location.clone();
             location.getWorld().spawnParticle(particle, locationTemp.clone().add(new Vector(c / scale, b / scale, 0).rotateAroundX(pitch).rotateAroundY(yaw)), 3, 0, 0, 0, 0, options);
+        }
+    }
+
+    private void respawnEnd(){
+        player.getWorld().strikeLightningEffect(location);
+        player.getWorld().playSound(location,Sound.ENTITY_LIGHTNING_BOLT_THUNDER,1,1);
+
+
+        Team team = player.getScoreboard().getPlayerTeam(player);
+        for(String name : team.getEntries()) {
+            if(player.getServer().getPlayer(name) != null && player.getServer().getPlayer(name).isOnline() && !player.getName().equals(name)) {
+                Player player1 = player.getServer().getPlayer(name);
+                player1.teleport(player1);
+
+                Color c = Color.fromRGB(player1.getScoreboard().getPlayerTeam(player1).getColor().asBungee().getColor().getRed(),player1.getScoreboard().getPlayerTeam(player1).getColor().asBungee().getColor().getGreen(),player1.getScoreboard().getPlayerTeam(player1).getColor().asBungee().getColor().getBlue());
+                ItemStack i = new ItemStack(Material.LEATHER_LEGGINGS);
+                LeatherArmorMeta meta = (LeatherArmorMeta) i.getItemMeta();
+                meta.setColor(c);
+                i.setItemMeta(meta);
+                player1.getInventory().setItem(35,i);
+                player1.getInventory().setItem(22,new ItemStack(Material.LEATHER_HELMET));
+                player1.getInventory().setItem(23,new ItemStack(Material.LEATHER_CHESTPLATE));
+                player1.getInventory().setItem(24,new ItemStack(Material.LEATHER_BOOTS));
+
+
+                GiveMap.giveBig(player1);
+                GiveMap.giveMini(player1);
+                player1.setGameMode(GameMode.SURVIVAL);
+            }
         }
     }
 }
