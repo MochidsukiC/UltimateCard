@@ -1,3 +1,7 @@
 Respawn:
   prepareTime: 300
   CT: 180
+TakeOff:
+  CT: 180
+Hospital:
+  CT: 120

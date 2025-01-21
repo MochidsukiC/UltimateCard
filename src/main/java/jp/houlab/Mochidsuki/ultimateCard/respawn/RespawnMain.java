@@ -17,13 +17,13 @@ import org.bukkit.util.Vector;
 
 import static jp.houlab.Mochidsuki.ultimateCard.Main.config;
 
-public class Respawn extends BukkitRunnable {
+public class RespawnMain extends BukkitRunnable {
     private Player player;
     private Location location;
     private double pitch = Math.toRadians(90);
     private double yaw = 0;
     private int times;
-    public Respawn(Player player, Location location, int times) {
+    public RespawnMain(Player player, Location location, int times) {
         this.player = player;
         this.location = location;
         this.times = times;
