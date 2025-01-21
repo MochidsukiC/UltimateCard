@@ -51,10 +51,14 @@ public class IgnitionListener implements org.bukkit.event.Listener {
                         new RespawnMain(player, player.getLocation().clone(), 0).runTaskTimer(plugin, 1, 1);
                         Main.setCoolDown(player,config.getInt("Respawn.CT"));
                     }
+                    break;
                 }
                 case SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE:{//Hospital
-                    new HospitalMain(player.getLocation().clone()).Main();
-                    Main.setCoolDown(player,config.getInt("Hospital.CT"));
+                    if(player.getCooldown(Material.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE) == 0) {
+                        new HospitalMain(player.getLocation().clone()).Main();
+                        Main.setCoolDown(player, config.getInt("Hospital.CT"));
+                    }
+                    break;
                 }
             }
         }

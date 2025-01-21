@@ -1,10 +1,7 @@
 package jp.houlab.Mochidsuki.ultimateCard.hospital;
 
 import net.kyori.adventure.bossbar.BossBar;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,9 +19,15 @@ public class HospitalMain {
     }
 
     public void Main(){
+        location.getWorld().playSound(location, Sound.BLOCK_BEACON_ACTIVATE,2,1);
+
         new BukkitRunnable() {
             public void run() {
                 for(Player player : Bukkit.getOnlinePlayers()){
+
+                        if(times % 80 == 20){
+                            location.getWorld().playSound(location, Sound.BLOCK_BEACON_AMBIENT,2,1);
+                        }
 
                         for(int i = times*10; i < (times+1)*10; i++){
                             double rad = Math.toRadians(i);

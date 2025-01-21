@@ -44,7 +44,7 @@ public class TakeOffMain {
             player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 999999, 254));
 
             loc.getWorld().playSound(loc, Sound.ITEM_FIRECHARGE_USE,0.5f,0);
-            loc.getWorld().playSound(loc,Sound.ITEM_ARMOR_EQUIP_NETHERITE,30f,0);
+            loc.getWorld().playSound(loc,Sound.ITEM_ARMOR_EQUIP_NETHERITE,2f,0);
             new BukkitRunnable() {
                 @Override
                 public void run() {
