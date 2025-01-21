@@ -1,10 +1,15 @@
 package jp.houlab.Mochidsuki.ultimateCard.respawn;
 
 import jp.houlab.mochidsuki.gamemap.GiveMap;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Trident;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
@@ -106,7 +111,7 @@ public class Respawn extends BukkitRunnable {
 
 
             if(times == prepareTime - 40){
-                location.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,location,10000,0,0,0,20);
+                location.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,location.clone().add(0,1,0),10000,0,0,0,20);
             }
         } else if (times>=prepareTime) {
             if(!player.getGameMode().equals(GameMode.SPECTATOR)) {
@@ -137,22 +142,35 @@ public class Respawn extends BukkitRunnable {
         for(String name : team.getEntries()) {
             if(player.getServer().getPlayer(name) != null && player.getServer().getPlayer(name).isOnline() && !player.getName().equals(name)) {
                 Player player1 = player.getServer().getPlayer(name);
-                player1.teleport(player1);
+                if(player1.getGameMode().equals(GameMode.SPECTATOR)) {
+                    player1.teleport(location);
 
-                Color c = Color.fromRGB(player1.getScoreboard().getPlayerTeam(player1).getColor().asBungee().getColor().getRed(),player1.getScoreboard().getPlayerTeam(player1).getColor().asBungee().getColor().getGreen(),player1.getScoreboard().getPlayerTeam(player1).getColor().asBungee().getColor().getBlue());
-                ItemStack i = new ItemStack(Material.LEATHER_LEGGINGS);
-                LeatherArmorMeta meta = (LeatherArmorMeta) i.getItemMeta();
-                meta.setColor(c);
-                i.setItemMeta(meta);
-                player1.getInventory().setItem(35,i);
-                player1.getInventory().setItem(22,new ItemStack(Material.LEATHER_HELMET));
-                player1.getInventory().setItem(23,new ItemStack(Material.LEATHER_CHESTPLATE));
-                player1.getInventory().setItem(24,new ItemStack(Material.LEATHER_BOOTS));
+                    Color c = Color.fromRGB(player1.getScoreboard().getPlayerTeam(player1).getColor().asBungee().getColor().getRed(), player1.getScoreboard().getPlayerTeam(player1).getColor().asBungee().getColor().getGreen(), player1.getScoreboard().getPlayerTeam(player1).getColor().asBungee().getColor().getBlue());
+                    ItemStack i = new ItemStack(Material.LEATHER_LEGGINGS);
+                    LeatherArmorMeta meta = (LeatherArmorMeta) i.getItemMeta();
+                    meta.setColor(c);
+                    i.setItemMeta(meta);
+                    player1.getInventory().setItem(35, i);
+                    player1.getInventory().setItem(22, new ItemStack(Material.CHAINMAIL_HELMET));
+                    player1.getInventory().setItem(23, new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                    player1.getInventory().setItem(24, new ItemStack(Material.CHAINMAIL_BOOTS));
+
+                    ItemStack trident = new ItemStack(Material.TRIDENT);
+                    ItemMeta tridentMeta = trident.getItemMeta();
+                    tridentMeta.addEnchant(Enchantment.LOYALTY, 1, true);
+                    trident.setItemMeta(tridentMeta);
+                    player1.getInventory().addItem(trident);
+
+                    ItemStack miniCharger = new ItemStack(Material.ENDER_PEARL, 4);
+                    ItemMeta miniChargerMeta = miniCharger.getItemMeta();
+                    miniChargerMeta.displayName(Component.text("ミニチャージャ－"));
+                    player1.getInventory().addItem(miniCharger);
 
 
-                GiveMap.giveBig(player1);
-                GiveMap.giveMini(player1);
-                player1.setGameMode(GameMode.SURVIVAL);
+                    GiveMap.giveBig(player1);
+                    GiveMap.giveMini(player1);
+                    player1.setGameMode(GameMode.SURVIVAL);
+                }
             }
         }
     }

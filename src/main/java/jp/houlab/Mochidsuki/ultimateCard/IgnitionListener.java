@@ -14,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jp.houlab.Mochidsuki.ultimateCard.Main.config;
 import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
 
 /**
@@ -47,7 +48,7 @@ public class IgnitionListener implements org.bukkit.event.Listener {
                 case VEX_ARMOR_TRIM_SMITHING_TEMPLATE:{//Respawn
                     if(player.getCooldown(Material.VEX_ARMOR_TRIM_SMITHING_TEMPLATE) == 0) {
                         new Respawn(player, player.getLocation().clone(), 0).runTaskTimer(plugin, 1, 1);
-                        Main.setCoolDown(player,10);
+                        Main.setCoolDown(player,config.getInt("Respawn.CT"));
                     }
                 }
             }
