@@ -1,6 +1,7 @@
 package jp.houlab.Mochidsuki.ultimateCard;
 
-import jp.houlab.Mochidsuki.ultimateCard.respawn.Respawn;
+import jp.houlab.Mochidsuki.ultimateCard.hospital.HospitalMain;
+import jp.houlab.Mochidsuki.ultimateCard.respawn.RespawnMain;
 import jp.houlab.Mochidsuki.ultimateCard.takeoff.TakeOffMain;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -14,6 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jp.houlab.Mochidsuki.ultimateCard.Main.config;
 import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
 
 /**
@@ -46,9 +48,13 @@ public class IgnitionListener implements org.bukkit.event.Listener {
                 }
                 case VEX_ARMOR_TRIM_SMITHING_TEMPLATE:{//Respawn
                     if(player.getCooldown(Material.VEX_ARMOR_TRIM_SMITHING_TEMPLATE) == 0) {
-                        new Respawn(player, player.getLocation().clone(), 0).runTaskTimer(plugin, 1, 1);
-                        Main.setCoolDown(player,10);
+                        new RespawnMain(player, player.getLocation().clone(), 0).runTaskTimer(plugin, 1, 1);
+                        Main.setCoolDown(player,config.getInt("Respawn.CT"));
                     }
+                }
+                case SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE:{//Hospital
+                    new HospitalMain(player.getLocation().clone()).Main();
+                    Main.setCoolDown(player,config.getInt("Hospital.CT"));
                 }
             }
         }

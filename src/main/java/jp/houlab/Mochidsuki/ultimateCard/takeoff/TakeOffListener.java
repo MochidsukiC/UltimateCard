@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+import static jp.houlab.Mochidsuki.ultimateCard.Main.config;
+
 /**
  *アルティメットアビリティ・テイクオフに関するイベントリスナー
  * @author Mochidsuki
@@ -60,7 +62,7 @@ public class TakeOffListener implements Listener {
                     if (item.getEnchantments().containsKey(Enchantment.BINDING_CURSE) &&item.getEnchantments().get(Enchantment.BINDING_CURSE) == 1) {
                         IgnitionListener.LoadingItems.remove(item);
                         item.removeEnchantment(Enchantment.BINDING_CURSE);
-                        Main.setCoolDown(player, 120);
+                        Main.setCoolDown(player, config.getInt("TakeOff.CT"));
 
                         if(player.getScoreboard().getPlayerTeam(player) != null){
                             for(String name : player.getScoreboard().getPlayerTeam(player).getEntries()){
@@ -82,7 +84,7 @@ public class TakeOffListener implements Listener {
                             TakeOffMain.holdingTask.get(player).cancel();
                             TakeOffMain.holdingTask.remove(player);
                             TakeOffMain.mainUser.remove(player);
-                            Main.setCoolDown(player, 120);
+                            Main.setCoolDown(player, config.getInt("TakeOff.CT"));
                             TakeOffMain.spinUpEngine(player);
                         }
 
