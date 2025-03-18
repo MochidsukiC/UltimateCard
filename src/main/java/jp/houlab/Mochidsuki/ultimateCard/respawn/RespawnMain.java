@@ -28,7 +28,7 @@ public class RespawnMain extends BukkitRunnable {
         this.location = location;
         this.times = times;
 
-        location.getWorld().playSound(location,Sound.ENTITY_WITHER_SPAWN,100,1);
+        location.getWorld().playSound(location,Sound.ENTITY_WITHER_SPAWN,3,1);
     }
     @Override
     public void run() {
