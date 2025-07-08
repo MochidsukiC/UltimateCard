@@ -3,6 +3,7 @@ package jp.houlab.Mochidsuki.ultimateCard;
 import jp.houlab.Mochidsuki.ultimateCard.hospital.HospitalMain;
 import jp.houlab.Mochidsuki.ultimateCard.respawn.RespawnMain;
 import jp.houlab.Mochidsuki.ultimateCard.takeoff.TakeOffMain;
+import jp.houlab.Mochidsuki.ultimateCard.vaporblast.VaporBlastMain;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -58,6 +59,10 @@ public class IgnitionListener implements org.bukkit.event.Listener {
                         new HospitalMain(player.getLocation().clone()).Main();
                         Main.setCoolDown(player, config.getInt("Hospital.CT"));
                     }
+                    break;
+                }
+                case TIDE_ARMOR_TRIM_SMITHING_TEMPLATE:{
+                    new VaporBlastMain(player).jump();
                     break;
                 }
             }

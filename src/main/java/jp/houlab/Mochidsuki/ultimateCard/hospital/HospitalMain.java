@@ -1,5 +1,6 @@
 package jp.houlab.Mochidsuki.ultimateCard.hospital;
 
+import jp.houlab.mochidsuki.armorshield.ShieldUtil;
 import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 
 import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
+import static jp.houlab.mochidsuki.armorshield.Main.config;
 
 public class HospitalMain {
     private final Location location;
@@ -38,7 +40,11 @@ public class HospitalMain {
                             if(times%40 == 1) {
                                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 3));
                                 player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 40, 0));
-                                
+
+                            }
+                            if(times%10 == 1) {
+                                ShieldUtil shieldUtil = new ShieldUtil(player.getInventory().getItem(config.getInt("ChestPlateSlot")));
+                                shieldUtil.addShieldNow(1);
                             }
                             player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY,player.getLocation().add(new Vector(0,1,0)),1,0.5,1,0.5);
                         }
