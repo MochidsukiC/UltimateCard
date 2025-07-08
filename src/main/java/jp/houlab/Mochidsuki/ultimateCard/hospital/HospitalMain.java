@@ -38,7 +38,7 @@ public class HospitalMain {
                             if(times%40 == 1) {
                                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 3));
                                 player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 40, 0));
-
+                                
                             }
                             player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY,player.getLocation().add(new Vector(0,1,0)),1,0.5,1,0.5);
                         }
