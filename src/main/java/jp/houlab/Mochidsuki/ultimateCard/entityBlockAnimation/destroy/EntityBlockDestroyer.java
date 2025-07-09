@@ -1,22 +1,16 @@
 package jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation.destroy;
 
 import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
-
-import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
-
 public class EntityBlockDestroyer extends BukkitRunnable {
 
     BlockDisplay blockDisplay;
     ArmorStand armorStand;
-    int dist;
+    int time;
     float speed;
 
     public BlockDisplay getBlockDisplay() {
@@ -35,12 +29,12 @@ public class EntityBlockDestroyer extends BukkitRunnable {
         this.armorStand = armorStand;
     }
 
-    public int getDist() {
-        return dist;
+    public int getTime() {
+        return time;
     }
 
-    public void setDist(int dist) {
-        this.dist = dist;
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public float getSpeed() {
@@ -70,6 +64,7 @@ public class EntityBlockDestroyer extends BukkitRunnable {
     float acceleration;
     double y;
 
+    int nowTime;
 
     public EntityBlockDestroyer(BlockDisplay blockDisplay, EntityBlockDestroyAnimationKeyType type){
         this.blockDisplay = blockDisplay;
@@ -80,23 +75,31 @@ public class EntityBlockDestroyer extends BukkitRunnable {
                 break;
             }
             case FADE_UP:{
-                speed = 0.02f;
+                speed = 0.1f;
                 break;
             }
             case FADE_DOWN:{
-                speed = -0.02f;
+                speed = -0.1f;
                 break;
             }
         }
+
     }
 
     public EntityBlockDestroyer(BlockDisplay blockDisplay, ArmorStand armorStand ,EntityBlockDestroyAnimationKeyType type){
         this(blockDisplay, type);
         this.armorStand = armorStand;
+
+        if(armorStand!=null) {
+            for (Entity entity : armorStand.getPassengers()) {
+                entity.remove();
+            }
+            armorStand.remove();
+        }
     }
-    public EntityBlockDestroyer(BlockDisplay blockDisplay, ArmorStand armorStand ,EntityBlockDestroyAnimationKeyType type,int dist){
+    public EntityBlockDestroyer(BlockDisplay blockDisplay, ArmorStand armorStand ,EntityBlockDestroyAnimationKeyType type,int time){
         this(blockDisplay, armorStand ,type);
-        this.dist = dist;
+        this.time = time;
     }
 
     @Override
@@ -105,37 +108,17 @@ public class EntityBlockDestroyer extends BukkitRunnable {
         everyRun();
 
         Location location = blockDisplay.getLocation().clone().add(0,speed,0);
-        if(armorStand !=null){
-            armorStand.teleport(location);
-        }
+
         blockDisplay.teleport(location);
         speed+=acceleration;
 
-        if(speed < 0){
-            if(blockDisplay.getY() < y){
-                blockDisplay.remove();
-                if(armorStand!=null) {
-                    for (Entity entity : armorStand.getPassengers()) {
-                        entity.remove();
-                    }
-                    armorStand.remove();
-                }
-                finalRun();
-                cancel();
-            }
-        }else {
-            if(blockDisplay.getY() > y){
-                blockDisplay.remove();
-                if(armorStand!=null) {
-                    for (Entity entity : armorStand.getPassengers()) {
-                        entity.remove();
-                    }
-                    armorStand.remove();
-                }
-                finalRun();
-                cancel();
-            }
+        if(nowTime>=time){
+            blockDisplay.remove();
+            finalRun();
+            cancel();
         }
+
+        nowTime++;
     }
 
     public void everyRun(){

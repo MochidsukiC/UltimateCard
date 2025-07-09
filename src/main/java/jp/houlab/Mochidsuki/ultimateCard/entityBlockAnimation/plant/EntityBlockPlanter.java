@@ -128,24 +128,6 @@ public class EntityBlockPlanter extends BukkitRunnable {
                 transformation.getTranslation().set(-0.5,0,-0.5);
                 blockDisplay.setTransformation(transformation);
 
-                Sound sound1 = sound;
-                if(key.getSound() != null){
-                    sound1 = key.getSound();
-                }
-
-                if(sound1 != null) {
-                    location.getWorld().playSound(location.clone().add(new Vector(key.getX() * -1, key.getY(), key.getZ()).rotateAroundY(yaw)), key.getSound(), 1, 1);
-                }
-
-                Particle particle1 = particle;
-                if(key.getParticle() != null){
-                    particle1 = key.getParticle();
-                }
-
-                if (particle1 != null) {
-                    location.getWorld().spawnParticle(particle1,location.clone().add(new Vector(key.getX()*-1,key.getY(),key.getZ()).rotateAroundY(yaw)),10);
-                }
-
 
                 switch (key.getType()){
                     case DROP_IN:{
@@ -153,11 +135,11 @@ public class EntityBlockPlanter extends BukkitRunnable {
                         break;
                     }
                     case UP_FADE_IN:{
-                        new MoveBlock(0.02f,0,armorStand,blockDisplay,key,location.getY()+ key.getY()).runTaskTimer(plugin,1,1);
+                        new MoveBlock(0.2f,0,armorStand,blockDisplay,key,location.getY()+ key.getY()).runTaskTimer(plugin,1,1);
                         break;
                     }
                     case DOWN_FADE_IN:{
-                        new MoveBlock(-0.02f,0,armorStand,blockDisplay,key,location.getY()+ key.getY()).runTaskTimer(plugin,1,1);
+                        new MoveBlock(-0.2f,0,armorStand,blockDisplay,key,location.getY()+ key.getY()).runTaskTimer(plugin,1,1);
                         break;
                     }
                 }
@@ -202,22 +184,17 @@ class MoveBlock extends BukkitRunnable{
             armorStand.teleport(location);
         }
         blockDisplay.teleport(location);
-        speed+=acceleration;
 
         key.everyRun(blockDisplay,armorStand);
         everyRun();
 
-        if(speed < 0){
-            if(blockDisplay.getY() < y){
-                key.finalRun(blockDisplay,armorStand);
-                cancel();
-            }
-        }else {
-            if(blockDisplay.getY() > y){
-                key.finalRun(blockDisplay,armorStand);
-                cancel();
-            }
+        if(Math.abs(blockDisplay.getY() - y) <= speed){
+            key.finalRun(blockDisplay,armorStand);
+            cancel();
         }
+
+        speed+=acceleration;
+
     }
 
     public void everyRun(){

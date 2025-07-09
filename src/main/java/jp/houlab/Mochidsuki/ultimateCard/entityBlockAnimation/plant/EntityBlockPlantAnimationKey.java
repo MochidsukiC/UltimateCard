@@ -97,15 +97,7 @@ public class EntityBlockPlantAnimationKey {
 
     Particle particle;
 
-    public @Nullable Sound getSound() {
-        return sound;
-    }
 
-    public void setSound(Sound sound) {
-        this.sound = sound;
-    }
-
-    Sound sound;
 
 
     public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type){
@@ -118,11 +110,10 @@ public class EntityBlockPlantAnimationKey {
         this.type = type;
     }
 
-    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist,Sound sound) {
+    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist) {
         this(time,x,y,z,blockData,isCollision,type);
 
         this.dist = dist;
-        this.sound = sound;
     }
 
     public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist,Particle particle) {
@@ -137,7 +128,6 @@ public class EntityBlockPlantAnimationKey {
 
         this.dist = dist;
         this.particle = particle;
-        this.sound = sound;
 
     }
 
