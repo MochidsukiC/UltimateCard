@@ -1,7 +1,8 @@
-package jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation;
+package jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation.plant;
 
-import jp.houlab.Mochidsuki.ultimateCard.Main;
 import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Shulker;
@@ -9,6 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
@@ -16,16 +18,69 @@ import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
 public class EntityBlockPlanter extends BukkitRunnable {
     int times;
     int maxTime;
+
+    public int getTimes() {
+        return times;
+    }
+
+    public void setTimes(int times) {
+        this.times = times;
+    }
+
+    public int getMaxTime() {
+        return maxTime;
+    }
+
+    public void setMaxTime(int maxTime) {
+        this.maxTime = maxTime;
+    }
+
+    public List<EntityBlockPlantAnimationKey> getKeys() {
+        return keys;
+    }
+
+    public void setKeys(List<EntityBlockPlantAnimationKey> keys) {
+        this.keys = keys;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public double getYaw() {
+        return yaw;
+    }
+
+    public void setYaw(double yaw) {
+        this.yaw = yaw;
+    }
+
+    public Particle getParticle() {
+        return particle;
+    }
+
+    public Sound getSound() {
+        return sound;
+    }
+
     List<EntityBlockPlantAnimationKey> keys;
     Location location;
     double yaw;
+    final Particle particle;
+    final Sound sound;
 
-    public EntityBlockPlanter(int maxTime, List<EntityBlockPlantAnimationKey> keys, Location location,float yaw) {
+    public EntityBlockPlanter(int maxTime, List<EntityBlockPlantAnimationKey> keys, Location location, float yaw, @Nullable Particle defaultParticle, @Nullable Sound defaultSound) {
         this.maxTime = maxTime;
         this.keys = keys;
         this.location = location.clone();
         this.location.setPitch(0);
         this.location.setYaw(0);
+        this.particle = defaultParticle;
+        this.sound = defaultSound;
 
         if(yaw > -45){
             if(yaw < 45){
@@ -73,6 +128,23 @@ public class EntityBlockPlanter extends BukkitRunnable {
                 transformation.getTranslation().set(-0.5,0,-0.5);
                 blockDisplay.setTransformation(transformation);
 
+                Sound sound1 = sound;
+                if(key.getSound() != null){
+                    sound1 = key.getSound();
+                }
+
+                if(sound1 != null) {
+                    location.getWorld().playSound(location.clone().add(new Vector(key.getX() * -1, key.getY(), key.getZ()).rotateAroundY(yaw)), key.getSound(), 1, 1);
+                }
+
+                Particle particle1 = particle;
+                if(key.getParticle() != null){
+                    particle1 = key.getParticle();
+                }
+
+                if (particle1 != null) {
+                    location.getWorld().spawnParticle(particle1,location.clone().add(new Vector(key.getX()*-1,key.getY(),key.getZ()).rotateAroundY(yaw)),10);
+                }
 
 
                 switch (key.getType()){
@@ -132,15 +204,28 @@ class MoveBlock extends BukkitRunnable{
         blockDisplay.teleport(location);
         speed+=acceleration;
 
+        key.everyRun(blockDisplay,armorStand);
+        everyRun();
+
         if(speed < 0){
             if(blockDisplay.getY() < y){
+                key.finalRun(blockDisplay,armorStand);
                 cancel();
             }
         }else {
             if(blockDisplay.getY() > y){
+                key.finalRun(blockDisplay,armorStand);
                 cancel();
             }
         }
+    }
+
+    public void everyRun(){
+
+    }
+
+    public void finalRun(){
+
     }
 }
 

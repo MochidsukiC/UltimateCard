@@ -1,18 +1,18 @@
 package jp.houlab.Mochidsuki.ultimateCard.vaporblast;
 
-import jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation.EntityBlockPlantAnimationKey;
-import jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation.EntityBlockPlanter;
+import jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation.plant.EntityBlockPlantAnimationKey;
+import jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation.plant.EntityBlockPlanter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
 
@@ -37,37 +37,39 @@ public class VaporBlastMain {
 
     public void plantCloud(){
         BlockData blockData = Bukkit.createBlockData(Material.WHITE_WOOL);
+        EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType type = EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.UP_FADE_IN;
+
         List<EntityBlockPlantAnimationKey> keys = new ArrayList<>(List.of(
-                new EntityBlockPlantAnimationKey(0,0,0,0,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(1,-1,0,1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(2,0,0,1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(3,1,0,1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(4,1,0,0,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(5,1,0,-1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(6,0,0,-1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(7,-1,0,-1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(8,-1,0,0,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(8,-2,0,0,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(9,-2,0,1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(10,-1,0,2,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(11,0,0,2,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(12,1,0,2,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(13,2,0,1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(14,2,0,0,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(15,2,1,-1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(16,1,1,-2,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(17,0,1,-2,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(18,-1,1,-2,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(19,-2,1,-1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(20,-3,1,0,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(21,-3,1,1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(22,-2,1,2,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(23,-1,1,3,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(24,0,1,3,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(25,1,1,3,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(26,2,1,2,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(27,3,1,1,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD),
-                new EntityBlockPlantAnimationKey(28,3,1,0,blockData,true, EntityBlockPlantAnimationKey.EntityBlockPlantAnimationKeyType.DROP_IN,1, Particle.CLOUD)));
-        new EntityBlockPlanter(28,keys,location.add(0,-3,0),player.getYaw()).runTaskTimer(plugin,1,1);
+                new CloudPlantKey(0,0,0,0,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(1,-1,0,1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(2,0,0,1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(3,1,0,1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(4,1,0,0,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(5,1,0,-1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(6,0,0,-1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(7,-1,0,-1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(8,-1,0,0,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(8,-2,0,0,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(9,-2,0,1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(10,-1,0,2,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(11,0,0,2,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(12,1,0,2,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(13,2,0,1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(14,2,0,0,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(15,2,1,-1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(16,1,1,-2,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(17,0,1,-2,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(18,-1,1,-2,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(19,-2,1,-1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(20,-3,1,0,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(21,-3,1,1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(22,-2,1,2,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(23,-1,1,3,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(24,0,1,3,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(25,1,1,3,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(26,2,1,2,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(27,3,1,1,blockData,true, type,1, Particle.CLOUD),
+                new CloudPlantKey(28,3,1,0,blockData,true, type,1, Particle.CLOUD)));
+        new EntityBlockPlanter(28,keys,location.add(0,-3,0),player.getYaw(),Particle.CLOUD,null).runTaskTimer(plugin,1,1);
     }
 }

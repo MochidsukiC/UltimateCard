@@ -1,7 +1,10 @@
-package jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation;
+package jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation.plant;
 
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.BlockDisplay;
 
 import javax.annotation.Nullable;
 
@@ -84,7 +87,7 @@ public class EntityBlockPlantAnimationKey {
 
     private int dist;
 
-    public Particle getParticle() {
+    public @Nullable Particle getParticle() {
         return particle;
     }
 
@@ -93,8 +96,19 @@ public class EntityBlockPlantAnimationKey {
     }
 
     Particle particle;
-    
-    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist, @Nullable Particle particle){
+
+    public @Nullable Sound getSound() {
+        return sound;
+    }
+
+    public void setSound(Sound sound) {
+        this.sound = sound;
+    }
+
+    Sound sound;
+
+
+    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type){
         this.time = time;
         this.x = x;
         this.y = y;
@@ -102,15 +116,44 @@ public class EntityBlockPlantAnimationKey {
         this.blockData = blockData;
         this.isCollision = isCollision;
         this.type = type;
-        this.dist = dist;
-        this.particle = particle;
     }
 
-    public enum EntityBlockPlantAnimationKeyType{
+    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist,Sound sound) {
+        this(time,x,y,z,blockData,isCollision,type);
+
+        this.dist = dist;
+        this.sound = sound;
+    }
+
+    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist,Particle particle) {
+        this(time,x,y,z,blockData,isCollision,type);
+
+        this.dist = dist;
+        this.particle = particle;
+     }
+
+    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist,Particle particle,Sound sound) {
+        this(time,x,y,z,blockData,isCollision,type);
+
+        this.dist = dist;
+        this.particle = particle;
+        this.sound = sound;
+
+    }
+
+        public enum EntityBlockPlantAnimationKeyType{
         NORMAL,
         DOWN_FADE_IN,
         UP_FADE_IN,
         DROP_IN,
+    }
+
+    public void everyRun(BlockDisplay blockDisplay, ArmorStand armorStand){
+
+    }
+
+    public void finalRun(BlockDisplay blockDisplay, ArmorStand armorStand){
+
     }
 
 
