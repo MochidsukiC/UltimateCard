@@ -97,34 +97,44 @@ public class EntityBlockPlantAnimationKey {
 
     Particle particle;
 
+    public boolean isFPSMode() {
+        return FPSMode;
+    }
+
+    public void setFPSMode(boolean FPSMode) {
+        this.FPSMode = FPSMode;
+    }
+
+    private boolean FPSMode;
 
 
 
-    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type){
+    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision, boolean isFPSMode ,EntityBlockPlantAnimationKeyType type){
         this.time = time;
         this.x = x;
         this.y = y;
         this.z = z;
         this.blockData = blockData;
         this.isCollision = isCollision;
+        this.FPSMode = isFPSMode;
         this.type = type;
     }
 
-    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist) {
-        this(time,x,y,z,blockData,isCollision,type);
+    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision, boolean isFPSMode,EntityBlockPlantAnimationKeyType type, int dist) {
+        this(time,x,y,z,blockData,isCollision,isFPSMode,type);
 
         this.dist = dist;
     }
 
-    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist,Particle particle) {
-        this(time,x,y,z,blockData,isCollision,type);
+    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision, boolean isFPSMode,EntityBlockPlantAnimationKeyType type, int dist,Particle particle) {
+        this(time,x,y,z,blockData,isCollision,isFPSMode,type);
 
         this.dist = dist;
         this.particle = particle;
      }
 
-    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision,EntityBlockPlantAnimationKeyType type, int dist,Particle particle,Sound sound) {
-        this(time,x,y,z,blockData,isCollision,type);
+    public EntityBlockPlantAnimationKey(int time,int x, int y, int z, BlockData blockData, boolean isCollision, boolean isFPSMode,EntityBlockPlantAnimationKeyType type, int dist,Particle particle,Sound sound) {
+        this(time,x,y,z,blockData,isCollision,isFPSMode,type);
 
         this.dist = dist;
         this.particle = particle;
@@ -136,6 +146,10 @@ public class EntityBlockPlantAnimationKey {
         DOWN_FADE_IN,
         UP_FADE_IN,
         DROP_IN,
+    }
+
+    public void plantRun(BlockDisplay blockDisplay, ArmorStand armorStand){
+
     }
 
     public void everyRun(BlockDisplay blockDisplay, ArmorStand armorStand){

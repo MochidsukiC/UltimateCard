@@ -25,7 +25,7 @@ public class TakeOffCommandListener implements CommandExecutor {
                             if(TakeOffMain.holdingTask.containsKey(executor)) {
                                 if(player.getLocation().distance(executor.getLocation()) <= 4){
                                     if(!TakeOffMain.holdingTask.containsKey(player)) {
-                                        TakeOffMain.holdTakeOff(player,false);
+                                        TakeOffMain.holdTakeOff(player,false,null);
                                     }
                                 }else {
                                     player.sendMessage("アルティメット使用者から遠すぎます!!");

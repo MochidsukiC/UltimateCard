@@ -33,15 +33,15 @@ public class TakeOffListener implements Listener {
                 TakeOffMain.holdingTask.remove(player);
                 player.removePotionEffect(PotionEffectType.LEVITATION);
                 player.removeScoreboardTag("JetPack");
+                IgnitionListener.LoadingItems.remove(event.getPlayer().getUniqueId());
 
-                if(TakeOffMain.mainUser.contains(player)) {
+                if(TakeOffMain.mainUser.contains(player.getUniqueId())) {
                     Main.setCoolDown(player, 20);
-                    TakeOffMain.mainUser.remove(player);
+                    TakeOffMain.mainUser.remove(player.getUniqueId());
                 }
                 for(ItemStack item : player.getInventory().getContents()){
                     if(item != null && item.getType().equals(Material.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE)){
                         item.removeEnchantment(Enchantment.BINDING_CURSE);
-                        IgnitionListener.LoadingItems.remove(item);
                     }
                 }
             }
@@ -60,20 +60,19 @@ public class TakeOffListener implements Listener {
             switch (event.getItem().getType()){
                 case SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE: {
                     if (item.getEnchantments().containsKey(Enchantment.BINDING_CURSE) &&item.getEnchantments().get(Enchantment.BINDING_CURSE) == 1) {
-                        IgnitionListener.LoadingItems.remove(item);
                         item.removeEnchantment(Enchantment.BINDING_CURSE);
                         Main.setCoolDown(player, config.getInt("TakeOff.CT"));
 
                         if(player.getScoreboard().getPlayerTeam(player) != null){
                             for(String name : player.getScoreboard().getPlayerTeam(player).getEntries()){
-                                if(Bukkit.getPlayer(name) != null && Bukkit.getPlayer(name).isOnline()){
+                                if(Bukkit.getOfflinePlayer(name).isOnline()){
                                     Player p = Bukkit.getPlayer(name);
                                     if(TakeOffMain.holdingTask.containsKey(p)){
                                         p.removePotionEffect(PotionEffectType.LEVITATION);
                                         p.addScoreboardTag("JetPack");
                                         TakeOffMain.holdingTask.get(p).cancel();
                                         TakeOffMain.holdingTask.remove(p);
-                                        TakeOffMain.mainUser.remove(p);
+                                        TakeOffMain.mainUser.remove(p.getUniqueId());
                                         TakeOffMain.spinUpEngine(p);
                                     }
                                 }
@@ -83,8 +82,7 @@ public class TakeOffListener implements Listener {
                             player.addScoreboardTag("JetPack");
                             TakeOffMain.holdingTask.get(player).cancel();
                             TakeOffMain.holdingTask.remove(player);
-                            TakeOffMain.mainUser.remove(player);
-                            Main.setCoolDown(player, config.getInt("TakeOff.CT"));
+                            TakeOffMain.mainUser.remove(player.getUniqueId());
                             TakeOffMain.spinUpEngine(player);
                         }
 

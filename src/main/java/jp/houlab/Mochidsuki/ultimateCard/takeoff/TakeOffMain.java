@@ -1,5 +1,6 @@
 package jp.houlab.Mochidsuki.ultimateCard.takeoff;
 
+import jp.houlab.Mochidsuki.ultimateCard.IgnitionListener;
 import jp.houlab.mochidsuki.elytra_jetpacker.JumpEffect;
 import jp.houlab.mochidsuki.elytra_jetpacker.Main;
 import jp.houlab.mochidsuki.elytra_jetpacker.RemoveTag;
@@ -7,18 +8,26 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Shulker;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.checkerframework.checker.units.qual.N;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
+import static jp.houlab.Mochidsuki.ultimateCard.IgnitionListener.LoadingItems;
+import static jp.houlab.Mochidsuki.ultimateCard.Main.config;
 import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
 
 /**
@@ -31,7 +40,7 @@ public class TakeOffMain {
      * @param player 離陸待機に移行するプレイヤー
      * @param isMainPlayer プレイヤーがメイン飛行者(アルティメット使用者)か否か
      */
-    static public void holdTakeOff(Player player,boolean isMainPlayer) {
+    static public void holdTakeOff(Player player,boolean isMainPlayer, @Nullable ItemStack item) {
         boolean flag = false;
 
         for (int i = 1; i < 120 && !flag; i++) {
@@ -42,6 +51,7 @@ public class TakeOffMain {
             player.addScoreboardTag("JetPack");
             Location loc = player.getLocation().clone();
             player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 999999, 254));
+
 
             loc.getWorld().playSound(loc, Sound.ITEM_FIRECHARGE_USE,0.5f,0);
             loc.getWorld().playSound(loc,Sound.ITEM_ARMOR_EQUIP_NETHERITE,2f,0);
@@ -80,6 +90,17 @@ public class TakeOffMain {
                 }
             }
 
+            if(item != null) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        ItemMeta meta = item.getItemMeta();
+                        meta.addEnchant(Enchantment.BINDING_CURSE, 1, true);
+                        item.setItemMeta(meta);
+                    }
+                }.runTaskLater(plugin, 20);
+            }
+            LoadingItems.add(player.getUniqueId());
         }else {
             player.sendMessage("上空に障害物あり");
         }
@@ -94,6 +115,8 @@ public class TakeOffMain {
         shulker.setAI(false);
         shulker.setInvisible(true);
         player.getWorld().playSound(player.getLocation(),Sound.ENTITY_BREEZE_INHALE,2, (float)0);
+
+        IgnitionListener.LoadingItems.remove(player.getUniqueId());
 
         int time = 40;
         player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, time, 3));
@@ -155,7 +178,7 @@ public class TakeOffMain {
     /**
      * メイン飛行者のリスト
      */
-    static public List<Player> mainUser = new ArrayList<>();
+    static public List<UUID> mainUser = new ArrayList<>();
 }
 
 

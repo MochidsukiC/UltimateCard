@@ -3,6 +3,7 @@ package jp.houlab.Mochidsuki.ultimateCard.entityBlockAnimation.move;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.Shulker;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -155,7 +156,9 @@ public class EntityBlockMover extends BukkitRunnable {
         Location location = this.location.clone().add(new Vector(key.getX()*-1,key.getY(),key.getZ()).rotateAroundY(yaw));
         blockDisplay.teleport(location);
         if(armorStand != null){
+            if(armorStand.getPassengers().get(0) instanceof Shulker)armorStand.removePassenger(armorStand.getPassengers().get(0));
             armorStand.teleport(location);
+            if(armorStand.getPassengers().get(0) instanceof Shulker)armorStand.addPassenger(armorStand.getPassengers().get(0));
         }
 
         if(key.getParticle() != null){

@@ -10,8 +10,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 
+
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static jp.houlab.Mochidsuki.ultimateCard.Main.plugin;
 
@@ -73,6 +77,9 @@ public class EntityBlockPlanter extends BukkitRunnable {
     final Particle particle;
     final Sound sound;
 
+    public static final Map<UUID,UUID> ShulkerToBlockDisplay = new HashMap<>();
+
+
     public EntityBlockPlanter(int maxTime, List<EntityBlockPlantAnimationKey> keys, Location location, float yaw, @Nullable Particle defaultParticle, @Nullable Sound defaultSound) {
         this.maxTime = maxTime;
         this.keys = keys;
@@ -103,12 +110,28 @@ public class EntityBlockPlanter extends BukkitRunnable {
     public void run() {
         for(EntityBlockPlantAnimationKey key : keys){
             if(key.getTime() == times) {
+
+                BlockDisplay blockDisplay = location.getWorld().spawn(location.clone().add(new Vector(key.getX()*-1,key.getY()+key.getDist(),key.getZ()).rotateAroundY(yaw)), BlockDisplay.class);
+                blockDisplay.setBlock(key.getBlockData());
+
+
+                Transformation transformation = blockDisplay.getTransformation();
+                transformation.getTranslation().set(-0.5,0,-0.5);
+                blockDisplay.setTransformation(transformation);
+
                 ArmorStand armorStand;
                 if(key.isCollision()){
-                    armorStand = location.getWorld().spawn(location.clone().add(new Vector(key.getX()*-1,key.getY(),key.getZ()).rotateAroundY(yaw)), ArmorStand.class);
+                    double y = key.getDist();
+                    if(key.isFPSMode()){
+                        y = 0;
+                    }
+                    armorStand = location.getWorld().spawn(location.clone().add(new Vector(key.getX()*-1,key.getY()+y,key.getZ()).rotateAroundY(yaw)), ArmorStand.class);
+
                     armorStand.setMarker(true);
                     armorStand.setGravity(false);
                     armorStand.setInvisible(true);
+                    armorStand.setCollidable(false);
+                    armorStand.setInvulnerable(true);
 
 
                     Shulker shulker = location.getWorld().spawn(location.clone(), Shulker.class);
@@ -118,16 +141,13 @@ public class EntityBlockPlanter extends BukkitRunnable {
                     shulker.setSilent(true);
 
                     armorStand.addPassenger(shulker);
+
+                    EntityBlockPlanter.ShulkerToBlockDisplay.put(shulker.getUniqueId(),blockDisplay.getUniqueId());
+
+
                 }else {
                     armorStand = null;
                 }
-                BlockDisplay blockDisplay = location.getWorld().spawn(location.clone().add(new Vector(key.getX()*-1,key.getY(),key.getZ()).rotateAroundY(yaw)), BlockDisplay.class);
-                blockDisplay.setBlock(key.getBlockData());
-
-                Transformation transformation = blockDisplay.getTransformation();
-                transformation.getTranslation().set(-0.5,0,-0.5);
-                blockDisplay.setTransformation(transformation);
-
 
                 switch (key.getType()){
                     case DROP_IN:{
@@ -160,6 +180,7 @@ class MoveBlock extends BukkitRunnable{
     BlockDisplay blockDisplay;
     float acceleration;
     EntityBlockPlantAnimationKey key;
+    Shulker shulker;
     double y;
 
     public MoveBlock(float firstspeed, float acceleration, ArmorStand armorStand, BlockDisplay blockDisplay, EntityBlockPlantAnimationKey key,double y){
@@ -171,24 +192,42 @@ class MoveBlock extends BukkitRunnable{
         this.y = y;
 
         if(armorStand!=null){
-            armorStand.teleport(armorStand.getLocation().clone().add(0,key.getDist(),0));
+            Location startLocation = blockDisplay.getLocation().clone().add(0,key.getDist(),0);
+            armorStand.teleport(startLocation);
+            if(!armorStand.getPassengers().isEmpty() && armorStand.getPassengers().get(0) instanceof Shulker){
+                this.shulker = (Shulker) armorStand.getPassengers().get(0);
+                armorStand.addPassenger(this.shulker);
+            }
         }
         blockDisplay.teleport(blockDisplay.getLocation().clone().add(0,key.getDist(),0));
+
+        key.plantRun(blockDisplay,armorStand);
     }
     @Override
     public void run() {
 
 
         Location location = blockDisplay.getLocation().clone().add(0,speed,0);
-        if(armorStand !=null){
+        if(!key.isFPSMode() && armorStand !=null){
+            if(shulker!=null)armorStand.removePassenger(shulker);
             armorStand.teleport(location);
+            if(shulker!=null)armorStand.addPassenger(shulker);
         }
         blockDisplay.teleport(location);
 
         key.everyRun(blockDisplay,armorStand);
-        everyRun();
 
         if(Math.abs(blockDisplay.getY() - y) <= speed){
+
+            Location finalLocation = blockDisplay.getLocation().clone();
+            finalLocation.setY(y);
+
+            if(!key.isFPSMode() && armorStand !=null){
+                if(shulker!=null)armorStand.removePassenger(shulker);
+                armorStand.teleport(finalLocation);
+                if(shulker!=null)armorStand.addPassenger(shulker);
+            }
+            blockDisplay.teleport(finalLocation);
             key.finalRun(blockDisplay,armorStand);
             cancel();
         }
@@ -197,12 +236,5 @@ class MoveBlock extends BukkitRunnable{
 
     }
 
-    public void everyRun(){
-
-    }
-
-    public void finalRun(){
-
-    }
 }
 

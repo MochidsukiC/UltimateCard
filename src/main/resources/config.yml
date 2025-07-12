@@ -5,3 +5,6 @@ TakeOff:
   CT: 180
 Hospital:
   CT: 120
+VaporBlast:
+  PersistenceTime: 30
+  CT: 150

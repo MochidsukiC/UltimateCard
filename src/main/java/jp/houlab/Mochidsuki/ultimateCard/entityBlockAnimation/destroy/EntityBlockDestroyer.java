@@ -10,7 +10,7 @@ public class EntityBlockDestroyer extends BukkitRunnable {
 
     BlockDisplay blockDisplay;
     ArmorStand armorStand;
-    int time;
+    private int time;
     float speed;
 
     public BlockDisplay getBlockDisplay() {
@@ -63,6 +63,14 @@ public class EntityBlockDestroyer extends BukkitRunnable {
 
     float acceleration;
     double y;
+
+    public int getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(int nowTime) {
+        this.nowTime = nowTime;
+    }
 
     int nowTime;
 
